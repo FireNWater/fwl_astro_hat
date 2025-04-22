@@ -15,15 +15,19 @@ struct  DCPorts {
 
 impl DCPorts {
     fn turn_on (&self) -> Result<T, E> {
+        // need to figure out how to pass the individual port number into self
         let mut pin = Gpio::new()?.get(Self)?.into_output();
         pin.set_high();
         Ok(())
+        // don't know what return type is
     }
 
     fn turn_off (&self) -> Result<T, E> {
+        // need to figure out how to pass the individual port number into self
         let mut pin = Gpio::new()?.get(Self)?.into_output();
         pin.set_low();
         Ok(())
+        // don't know what return type is
     }
 }
 
