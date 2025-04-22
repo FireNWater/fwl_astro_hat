@@ -18,6 +18,7 @@ impl DCPorts {
         // need to figure out how to pass the individual port number into self
         let mut pin = Gpio::new()?.get(port)?.into_output();
         pin.set_high();
+        println!("Turning LED {} on a {}.", port, DeviceInfo::new()?.model());
         Ok(())
     }
 
@@ -25,6 +26,7 @@ impl DCPorts {
         // need to figure out how to pass the individual port number into self
         let mut pin = Gpio::new()?.get(port)?.into_output();
         pin.set_low();
+        println!("Turning LED {} off a {}.", port, DeviceInfo::new()?.model());
         Ok(())
     }
 }
@@ -71,17 +73,6 @@ dc.turn_on(dc.port_extra)?;
 delay(500);
 dc.turn_off(dc.port_extra)?;
 
-
-//     let check_pins =  [dc.port_1, 
-//                                 dc.port_2, 
-//                                 dc.port_3, 
-//                                 dc.port_extra, 
-//                                 dew_heaters.heater_1, 
-//                                 dew_heaters.heater_2];
-
-// // Cycle thru the ports to make sure they work.. 
-
-//     for pin in check_pins {
 
 //     println!("Blinking LED {} on a {}.", pin, DeviceInfo::new()?.model());
 //     let mut pin = Gpio::new()?.get(dc.port_3)?.into_output();
