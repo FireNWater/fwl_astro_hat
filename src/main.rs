@@ -14,20 +14,18 @@ struct  DCPorts {
 }
 
 impl DCPorts {
-    fn turn_on (&self) -> Result<T, E> {
+    fn turn_on (&self, port: u8) -> Result<(), Box<dyn Error>> {
         // need to figure out how to pass the individual port number into self
-        let mut pin = Gpio::new()?.get(Self)?.into_output();
+        let mut pin = Gpio::new()?.get(port)?.into_output();
         pin.set_high();
         Ok(())
-        // don't know what return type is
     }
 
-    fn turn_off (&self) -> Result<T, E> {
+    fn turn_off (&self, port: u8) -> Result<(), Box<dyn Error>> {
         // need to figure out how to pass the individual port number into self
-        let mut pin = Gpio::new()?.get(Self)?.into_output();
+        let mut pin = Gpio::new()?.get(port)?.into_output();
         pin.set_low();
         Ok(())
-        // don't know what return type is
     }
 }
 
@@ -57,26 +55,47 @@ fn main() -> Result<(), Box<dyn Error>> {
         heater_2: 13,
     };
 
-    let check_pins =  [dc.port_1, 
-                                dc.port_2, 
-                                dc.port_3, 
-                                dc.port_extra, 
-                                dew_heaters.heater_1, 
-                                dew_heaters.heater_2];
+dc.turn_on(dc.port_1)?;
+delay(500);
+dc.turn_off(dc.port_1)?;
 
-// Cycle thru the ports to make sure they work.. 
+dc.turn_on(dc.port_2)?;
+delay(500);
+dc.turn_off(dc.port_2)?;
 
-    for pin in check_pins {
+dc.turn_on(dc.port_3)?;
+delay(500);
+dc.turn_off(dc.port_3)?;
 
-    println!("Blinking LED {} on a {}.", pin, DeviceInfo::new()?.model());
-    let mut pin = Gpio::new()?.get(dc.port_3)?.into_output();
-    // Blink the LED by setting the pin's logic level high for 500 ms.
-    pin.set_high();
-    thread::sleep(Duration::from_millis(500));
-    pin.set_low();
+dc.turn_on(dc.port_extra)?;
+delay(500);
+dc.turn_off(dc.port_extra)?;
 
-    }
+
+//     let check_pins =  [dc.port_1, 
+//                                 dc.port_2, 
+//                                 dc.port_3, 
+//                                 dc.port_extra, 
+//                                 dew_heaters.heater_1, 
+//                                 dew_heaters.heater_2];
+
+// // Cycle thru the ports to make sure they work.. 
+
+//     for pin in check_pins {
+
+//     println!("Blinking LED {} on a {}.", pin, DeviceInfo::new()?.model());
+//     let mut pin = Gpio::new()?.get(dc.port_3)?.into_output();
+//     // Blink the LED by setting the pin's logic level high for 500 ms.
+//     pin.set_high();
+//     thread::sleep(Duration::from_millis(500));
+//     pin.set_low();
+
+//     }
         
     Ok(())
 }
 //////////////////////////////////////////////////////////////////////////////////
+
+fn delay(millisec: u64) {
+    thread::sleep(Duration::from_millis(millisec));
+}
