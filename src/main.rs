@@ -1,6 +1,6 @@
 
 use std::error::Error;
-use std::thread;
+use std::{thread, u8};
 use std::time::Duration;
 
 use rppal::gpio::Gpio;
@@ -13,9 +13,29 @@ struct  DCPorts {
     port_extra: u8,
 }
 
+impl DCPorts {
+    fn turn_on (&self) -> Result<T, E> {
+        let mut pin = Gpio::new()?.get(Self)?.into_output();
+        pin.set_high();
+        Ok(())
+    }
+
+    fn turn_off (&self) -> Result<T, E> {
+        let mut pin = Gpio::new()?.get(Self)?.into_output();
+        pin.set_low();
+        Ok(())
+    }
+}
+
 struct DewHeaters {
     heater_1: u8,
     heater_2: u8,
+}
+
+impl DewHeaters {
+    fn set_power (&self, power: u8) {
+        // code to set hardware PWM from 0-100% cycle at 10Hz
+    }
 }
 
 fn main() -> Result<(), Box<dyn Error>> {
@@ -39,6 +59,8 @@ fn main() -> Result<(), Box<dyn Error>> {
                                 dc.port_extra, 
                                 dew_heaters.heater_1, 
                                 dew_heaters.heater_2];
+
+// Cycle thru the ports to make sure they work.. 
 
     for pin in check_pins {
 
