@@ -19,6 +19,7 @@ impl DCPorts {
         let mut pin = Gpio::new()?.get(port)?.into_output();
         pin.set_high();
         println!("Turning LED {} on a {}.", port, DeviceInfo::new()?.model());
+        delay(500);   //when pin goes out of scope, the pin turn off.. . ugh
         Ok(())
     }
 
@@ -48,7 +49,7 @@ fn main() -> Result<(), Box<dyn Error>> {
     let dc = DCPorts {
         port_1: 22,
         port_2: 23,
-        port_3: 24,
+        port_3: 24, 
         port_extra: 25,
     };
 
@@ -73,13 +74,12 @@ dc.turn_on(dc.port_extra)?;
 delay(500);
 dc.turn_off(dc.port_extra)?;
 
-
-//     println!("Blinking LED {} on a {}.", pin, DeviceInfo::new()?.model());
-//     let mut pin = Gpio::new()?.get(dc.port_3)?.into_output();
-//     // Blink the LED by setting the pin's logic level high for 500 ms.
-//     pin.set_high();
-//     thread::sleep(Duration::from_millis(500));
-//     pin.set_low();
+    // let mut pin = Gpio::new()?.get(dc.port_3)?.into_output();
+    // println!("Blinking LED {:?} on a {}.", pin, DeviceInfo::new()?.model());
+    // // Blink the LED by setting the pin's logic level high for 500 ms.
+    // pin.set_high();
+    // thread::sleep(Duration::from_millis(500));
+    // pin.set_low();
 
 //     }
         
