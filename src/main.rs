@@ -13,35 +13,10 @@ struct  DCPorts {
     port_extra: u8,
 }
 
-impl DCPorts {
-    fn turn_on (&self, port: u8) -> Result<(), Box<dyn Error>> {
-        // need to figure out how to pass the individual port number into self
-        let mut pin = Gpio::new()?.get(port)?.into_output();
-        pin.set_high();
-        println!("Turning LED {} on a {}.", port, DeviceInfo::new()?.model());
-        delay(500);   //when pin goes out of scope, the pin turn off.. . ugh
-        Ok(())
-    }
-
-    fn turn_off (&self, port: u8) -> Result<(), Box<dyn Error>> {
-        // need to figure out how to pass the individual port number into self
-        let mut pin = Gpio::new()?.get(port)?.into_output();
-        pin.set_low();
-        println!("Turning LED {} off a {}.", port, DeviceInfo::new()?.model());
-        Ok(())
-    }
-}
-
-struct DewHeaters {
-    heater_1: u8,
-    heater_2: u8,
-}
-
-impl DewHeaters {
-    fn set_power (&self, power: u8) {
-        // code to set hardware PWM from 0-100% cycle at 10Hz
-    }
-}
+// struct DewHeaters {
+//     heater_1: u8,
+//     heater_2: u8,
+// }
 
 fn main() -> Result<(), Box<dyn Error>> {
 
@@ -53,26 +28,36 @@ fn main() -> Result<(), Box<dyn Error>> {
         port_extra: 25,
     };
 
-    let dew_heaters = DewHeaters {
-        heater_1: 12,
-        heater_2: 13,
-    };
+    // let dew_heaters = DewHeaters {
+    //     heater_1: 12,
+    //     heater_2: 13,
+    // };
 
-dc.turn_on(dc.port_1)?;
-delay(500);
-dc.turn_off(dc.port_1)?;
+          //cycle thru all the ports
+    let mut pin = Gpio::new()?.get(dc.port_1)?.into_output();
+    pin.set_high();
+    println!("Blinking LED {:?} on a {}.", dc.port_1, DeviceInfo::new()?.model());
+    delay(500);
+    pin.set_low();
 
-dc.turn_on(dc.port_2)?;
-delay(500);
-dc.turn_off(dc.port_2)?;
+    let mut pin = Gpio::new()?.get(dc.port_2)?.into_output();
+    pin.set_high();
+    println!("Blinking LED {:?} on a {}.", dc.port_2, DeviceInfo::new()?.model());
+    delay(500);
+    pin.set_low();
 
-dc.turn_on(dc.port_3)?;
-delay(500);
-dc.turn_off(dc.port_3)?;
+    let mut pin = Gpio::new()?.get(dc.port_3)?.into_output();
+    pin.set_high();
+    println!("Blinking LED {:?} on a {}.", dc.port_3, DeviceInfo::new()?.model());
+    delay(500);
+    pin.set_low();
 
-dc.turn_on(dc.port_extra)?;
-delay(500);
-dc.turn_off(dc.port_extra)?;
+    let mut pin = Gpio::new()?.get(dc.port_extra)?.into_output();
+    pin.set_high();
+    println!("Blinking LED {:?} on a {}.", dc.port_extra, DeviceInfo::new()?.model());
+    delay(500);
+    pin.set_low();
+   
 
     // let mut pin = Gpio::new()?.get(dc.port_3)?.into_output();
     // println!("Blinking LED {:?} on a {}.", pin, DeviceInfo::new()?.model());
