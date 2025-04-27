@@ -7,10 +7,6 @@ use rppal::gpio::Gpio;
 use rppal::system::DeviceInfo;
 use rppal::pwm::{Channel, Polarity, Pwm};
 
-struct DewHeaters {
-    heater_1: Channel,
-    heater_2: Channel,
-}
 
 fn main() -> Result<(), Box<dyn Error>> {
 
