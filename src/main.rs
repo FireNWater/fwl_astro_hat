@@ -5,72 +5,72 @@ use std::time::Duration;
 
 use rppal::gpio::Gpio;
 use rppal::system::DeviceInfo;
+use rppal::pwm::{Channel, Polarity, Pwm};
 
-struct  DCPorts {
-    port_1: u8,
-    port_2: u8,
-    port_3: u8,
-    port_extra: u8,
+struct DewHeaters {
+    heater_1: Channel,
+    heater_2: Channel,
 }
-
-// struct DewHeaters {
-//     heater_1: u8,
-//     heater_2: u8,
-// }
 
 fn main() -> Result<(), Box<dyn Error>> {
 
     // Gpio uses BCM pin numbering. Set pin numbers according to the BCM pinout.
-    let dc = DCPorts {
-        port_1: 22,
-        port_2: 23,
-        port_3: 24, 
-        port_extra: 25,
-    };
+    const DC_PORT_1: u8 = 22;
+    const DC_PORT_2: u8 = 23;
+    const DC_PORT_3: u8 = 24;
+    const DC_PORT_X: u8 = 25;
 
-    // let dew_heaters = DewHeaters {
-    //     heater_1: 12,
-    //     heater_2: 13,
-    // };
+    const DH_PORT_1: u8 = 12;
+    const DH_PORT_2: u8 = 13;
 
-          //cycle thru all the ports
-    let mut pin = Gpio::new()?.get(dc.port_1)?.into_output();
+    
+
+    //cycle thru all the GPIO ports
+    let mut pin = Gpio::new()?.get(DC_PORT_1)?.into_output();
     pin.set_high();
-    println!("Blinking LED {:?} on a {}.", dc.port_1, DeviceInfo::new()?.model());
+    println!("Blinking LED {:?} on a {}.", DC_PORT_1, DeviceInfo::new()?.model());
     delay(500);
     pin.set_low();
 
-    let mut pin = Gpio::new()?.get(dc.port_2)?.into_output();
+    let mut pin = Gpio::new()?.get(DC_PORT_2)?.into_output();
     pin.set_high();
-    println!("Blinking LED {:?} on a {}.", dc.port_2, DeviceInfo::new()?.model());
+    println!("Blinking LED {:?} on a {}.", DC_PORT_2, DeviceInfo::new()?.model());
     delay(500);
     pin.set_low();
 
-    let mut pin = Gpio::new()?.get(dc.port_3)?.into_output();
+    let mut pin = Gpio::new()?.get(DC_PORT_3)?.into_output();
     pin.set_high();
-    println!("Blinking LED {:?} on a {}.", dc.port_3, DeviceInfo::new()?.model());
+    println!("Blinking LED {:?} on a {}.", DC_PORT_3, DeviceInfo::new()?.model());
     delay(500);
     pin.set_low();
 
-    let mut pin = Gpio::new()?.get(dc.port_extra)?.into_output();
+    let mut pin = Gpio::new()?.get(DC_PORT_X)?.into_output();
     pin.set_high();
-    println!("Blinking LED {:?} on a {}.", dc.port_extra, DeviceInfo::new()?.model());
+    println!("Blinking LED {:?} on a {}.", DC_PORT_X, DeviceInfo::new()?.model());
     delay(500);
     pin.set_low();
    
+    // PWM pin tests
+    println!("Test PWMs");
+    let pwm = Pwm::with_frequency(Channel::Pwm0, 2.0, 0.25, Polarity::Normal, true)?;
+    // Enable PWM channel 0 (BCM GPIO 12, physical pin 32) at 2 Hz with a 25% duty cycle.
+    //let dh1 = Pwm::with_frequency( Channel::Pwm0, 2.0, 0.25, Polarity::Normal, true)?;
+    println!("PWM0");
+    delay(500);
+    //dh1.set_frequency(8.0, 0.5)?;
+    pwm.set_frequency(8.0, 0.5)?;
+    delay(500);
 
-    // let mut pin = Gpio::new()?.get(dc.port_3)?.into_output();
-    // println!("Blinking LED {:?} on a {}.", pin, DeviceInfo::new()?.model());
-    // // Blink the LED by setting the pin's logic level high for 500 ms.
-    // pin.set_high();
-    // thread::sleep(Duration::from_millis(500));
-    // pin.set_low();
+    // let dh2 = Pwm::with_frequency( dew_heaters.heater_2, 2.0, 0.25, Polarity::Normal, true)?;
+    // delay(500);
+    // dh2.set_frequency(8.0, 0.5)?;
+    // delay(500);
 
-//     }
+
         
-    Ok(())
+    Ok(())          //Return value to OS
 }
-//////////////////////////////////////////////////////////////////////////////////
+
 
 fn delay(millisec: u64) {
     thread::sleep(Duration::from_millis(millisec));
